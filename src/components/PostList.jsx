@@ -10,7 +10,8 @@ function PostList(props) {
     setPost((existingPosts) => [postData, ...existingPosts]);
   }
 
-  let modalContent = null; // ini secara default mengmbalikan undefined kalau tidak diberikan nilai
+  // ini secara default mengmbalikan undefined kalau tidak diberikan nilai
+  let modalContent = null;
   if (props.isPosting) {
     modalContent = (
       <Modal onClose={props.onStopPosting}>
@@ -36,9 +37,19 @@ function PostList(props) {
 
       {/* komponen juga bisa bungkus komponen lain seperti "modal" dibawah yang nanti disebut penggunaan dengan children props */}
       {modalContent}
-      <ul className={classes.Post}>
-        {posts.map((post) => <Post author={post.author} body={post.body}/>)}
+      {posts.length > 0 && (
+        <ul className={classes.Post}>
+          {posts.map((post) => (
+            <Post key={post.body} author={post.author} body={post.body} /> // "key" ini properti bawaan react
+          ))}
         </ul>
+      )}
+      {posts.length === 0 && (
+        <div className={classes.noPost}>
+          <h2>There Is No Post Of FeedBack yet</h2>
+          <p>Please add Some!</p>
+        </div>
+      )}
     </div>
   );
 }
