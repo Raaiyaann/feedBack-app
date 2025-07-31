@@ -1,0 +1,26 @@
+.container {
+  display: flex;
+  gap: 2rem;
+  width: 100%;
+  align-items: flex-start;
+}
+
+.Post {
+  list-style: none;
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  display: grid ;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  /* justify-content: center; */
+}
+
+@media (max-width: 1024px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .Post {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+}
