@@ -10,13 +10,15 @@
   flex: 1;
   margin: 0;
   padding: 0;
-  display: grid ;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  /* justify-content: center; */
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 380px));
+  justify-content: start;
 }
-.noPost{
+
+.noPost {
   text-align: center;
-  margin-left: 33rem
+  margin-left: 33rem;
 }
 
 @media (max-width: 1024px) {
@@ -25,6 +27,13 @@
   }
 
   .Post {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 320px));
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .Post {
+    grid-template-columns: 1fr;
   }
 }

@@ -7,19 +7,36 @@ import Modal from "./Modal";
 function PostList(props) {
   const [posts, setPost] = useState([]);
   function addPostHandler(postData) {
+    fetch("http://localhost:8080/posts", {
+      method: "POST",
+      body: JSON.stringify(postData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     setPost((existingPosts) => [postData, ...existingPosts]);
   }
 
-  // ini secara default mengmbalikan undefined kalau tidak diberikan nilai
-  let modalContent = null;
-  if (props.isPosting) {
-    modalContent = (
-      <Modal onClose={props.onStopPosting}>
-        <NewPost onCancel={props.onStopPosting} onAddPost={addPostHandler} />
-      </Modal>
-    );
-  } //  btw kode jsx bisa di store pada variabel javascript.
+  let modalContent = props.isPosting ? (
+    <Modal onClose={props.onStopPosting}>
+      <NewPost onCancel={props.onStopPosting} onAddPost={addPostHandler} />
+    </Modal>
+  ) : null;
 
+  // postContent
+  let postContent =
+    posts.length > 0 ? (
+      <ul className={classes.Post}>
+        {posts.map((post) => (
+          <Post key={post.body} author={post.author} body={post.body} /> // "key" ini properti bawaan react
+        ))}
+      </ul>
+    ) : (
+      <div className={classes.noPost}>
+        <h2>There Is No Post Of FeedBack yet</h2>
+        <p>Please add Some!</p>
+      </div>
+    );
   return (
     <div className={classes.container}>
       {/* 
@@ -35,9 +52,10 @@ function PostList(props) {
        lewat objek seperti "props.onBodyChange" (INTINYA PROPS ITU KOMPONEN PARENT MENGIRIM DATA KE CHILD KOMPONEN)<--
       */}
 
-      {/* komponen juga bisa bungkus komponen lain seperti "modal" dibawah yang nanti disebut penggunaan dengan children props */}
-      {modalContent}
-      {posts.length > 0 && (
+      {/* komponen juga bisa bungkus komponen lain seperti "modal" dibawah yang nanti disebut penggunaan dengan children props 
+          =====================================================================================================================
+                                 dibawah merupakan penggunaan conditional rendering (biasa juga pake ternary operator seperti di atas)
+        {posts.length > 0 && (
         <ul className={classes.Post}>
           {posts.map((post) => (
             <Post key={post.body} author={post.author} body={post.body} /> // "key" ini properti bawaan react
@@ -49,7 +67,9 @@ function PostList(props) {
           <h2>There Is No Post Of FeedBack yet</h2>
           <p>Please add Some!</p>
         </div>
-      )}
+      )}*/}
+      {modalContent}
+      {postContent}
     </div>
   );
 }
