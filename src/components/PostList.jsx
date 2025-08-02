@@ -1,13 +1,25 @@
 import Post from "./Post";
 import classes from "./PostList.module.css";
 import NewPost from "./NewPost";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Modal from "./Modal";
 
 function PostList(props) {
   const [posts, setPost] = useState([]);
+  const [isFetching, setIsFetching] = useState(false); // untu buat kondisi loading saat membutuhkan waktu untuk ambil datanya
+  useEffect(() => {
+    async function fetchPost() {
+      setIsFetching(true);
+      const response = await fetch("http://localhost:8080/posts");
+      const responseData = await response.json();
+      setPost(responseData.posts); // "posts" disini itu merupakan key dari objek dibuat dari backend nya, bukan dari useState
+      setIsFetching(false);
+    }
+    fetchPost();
+  }, []);
   function addPostHandler(postData) {
     fetch("http://localhost:8080/posts", {
+      // fetch data dari backend
       method: "POST",
       body: JSON.stringify(postData),
       headers: {
@@ -16,7 +28,7 @@ function PostList(props) {
     });
     setPost((existingPosts) => [postData, ...existingPosts]);
   }
-
+  // modal Content
   let modalContent = props.isPosting ? (
     <Modal onClose={props.onStopPosting}>
       <NewPost onCancel={props.onStopPosting} onAddPost={addPostHandler} />
@@ -24,19 +36,23 @@ function PostList(props) {
   ) : null;
 
   // postContent
-  let postContent =
-    posts.length > 0 ? (
-      <ul className={classes.Post}>
-        {posts.map((post) => (
-          <Post key={post.body} author={post.author} body={post.body} /> // "key" ini properti bawaan react
-        ))}
-      </ul>
-    ) : (
-      <div className={classes.noPost}>
-        <h2>There Is No Post Of FeedBack yet</h2>
-        <p>Please add Some!</p>
-      </div>
-    );
+  let postContent = isFetching ? (
+    <div className={classes.loading}>
+      <h2>Loading posts ...</h2>
+    </div>
+  ) : posts.length > 0 ? (
+    <ul className={classes.Post}>
+      {posts.map((post) => (
+        <Post key={post.body} author={post.author} body={post.body} /> // "key" ini properti bawaan react
+      ))}
+    </ul>
+  ) : (
+    <div className={classes.noPost}>
+      <h2>There Is No Post Of FeedBack yet</h2>
+      <p>Please add Some!</p>
+    </div>
+  );
+
   return (
     <div className={classes.container}>
       {/* 
@@ -54,7 +70,7 @@ function PostList(props) {
 
       {/* komponen juga bisa bungkus komponen lain seperti "modal" dibawah yang nanti disebut penggunaan dengan children props 
           =====================================================================================================================
-                                 dibawah merupakan penggunaan conditional rendering (biasa juga pake ternary operator seperti di atas)
+                                 dibawah merupakan penggunaan conditional rendering (pake ternary operator lebih readable )
         {posts.length > 0 && (
         <ul className={classes.Post}>
           {posts.map((post) => (
