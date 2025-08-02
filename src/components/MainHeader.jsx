@@ -7,7 +7,7 @@ function MainHeader({ onCreatePost }) {
       <h1 className={classes.logo}>
         <MdMessage />
         FeedBack App
-      </h1>
+      </h1> 
       <p>
         <button className={classes.button} onClick={onCreatePost}>
           <MdPostAdd size={20} />

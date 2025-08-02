@@ -38,7 +38,7 @@ function PostList(props) {
   // postContent
   let postContent = isFetching ? (
     <div className={classes.loading}>
-      <h2>Loading posts ...</h2>
+      <h2>Loading posts ...</h2> 
     </div>
   ) : posts.length > 0 ? (
     <ul className={classes.Post}>
