@@ -1,10 +1,8 @@
 import Post from "./Post";
 import classes from "./PostList.module.css";
-import NewPost from "./NewPost";
 import { useState, useEffect } from "react";
-import Modal from "./Modal";
 
-function PostList(props) {
+function PostList() {
   const [posts, setPost] = useState([]);
   const [isFetching, setIsFetching] = useState(false); // untu buat kondisi loading saat membutuhkan waktu untuk ambil datanya
   useEffect(() => {
@@ -28,17 +26,11 @@ function PostList(props) {
     });
     setPost((existingPosts) => [postData, ...existingPosts]);
   }
-  // modal Content
-  let modalContent = props.isPosting ? (
-    <Modal onClose={props.onStopPosting}>
-      <NewPost onCancel={props.onStopPosting} onAddPost={addPostHandler} />
-    </Modal>
-  ) : null;
 
   // postContent
   let postContent = isFetching ? (
     <div className={classes.loading}>
-      <h2>Loading posts ...</h2> 
+      <h2>Loading posts ...</h2>
     </div>
   ) : posts.length > 0 ? (
     <ul className={classes.Post}>
@@ -84,7 +76,6 @@ function PostList(props) {
           <p>Please add Some!</p>
         </div>
       )}*/}
-      {modalContent}
       {postContent}
     </div>
   );

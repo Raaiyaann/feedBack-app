@@ -1,12 +1,14 @@
 .form {
   background-color: #2e0249;
   padding: 1.5rem;
-  width: 350px;
+  width: 100%;
+  max-width: 350px;
   min-width: 300px;
   flex-shrink: 0;
   border: 1px solid #15f5ba;
-  height: fit-content;
+  height: auto;
   border-radius: 20px;
+  box-sizing: border-box;
 }
 
 .form p {
@@ -68,7 +70,7 @@
 }
 
 .actions button:hover {
-  background-color: #E0E0E0;
+  background-color: #e0e0e0;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(21, 245, 186, 0.3);
   color: #000000;
@@ -85,11 +87,46 @@
   background-color: #000000;
 }
 
+/* Styling untuk Link component yang berfungsi sebagai cancel button */
+.actions a {
+  cursor: pointer;
+  font: inherit;
+  font-weight: bold;
+  padding: 0.75rem 2rem;
+  border: 2px solid #15f5ba;
+  border-radius: 8px;
+  background-color: transparent;
+  color: #15f5ba;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.actions a:hover {
+  color: whitesmoke;
+  background-color: #000000;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(21, 245, 186, 0.3);
+}
+
+.actions a:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(21, 245, 186, 0.2);
+}
+
+.actions a:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(21, 245, 186, 0.3);
+}
+
 @media (max-width: 1024px) {
   .form {
     width: 100%;
-    max-width: 500px;
-    margin: 0 auto;
+    max-width: 400px;
+    margin: 0;
   }
 }
 
@@ -97,6 +134,8 @@
   .form {
     padding: 1.5rem;
     margin: 0;
+    width: 100%;
+    max-width: 320px;
   }
 
   .actions {
@@ -104,7 +143,8 @@
     gap: 0.75rem;
   }
 
-  .actions button {
+  .actions button,
+  .actions a {
     width: 100%;
   }
 }

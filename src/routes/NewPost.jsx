@@ -1,5 +1,7 @@
 import classes from "./NewPost.module.css";
-import {useState} from 'react';
+import { useState } from "react";
+import Modal from "../components/Modal";
+import { Link } from "react-router-dom";
 function NewPost(props) {
   // $$$ const [useEnteredBody, setEnteredBody] = useState('') // useState itu SELALU mengembalikan array  dengan 2 elemen
   /* sebenarnya bisa juga dibawah seperti ini, cuman tidak praktis:
@@ -25,44 +27,52 @@ function NewPost(props) {
 
   const [enteredBody, setEnteredBody] = useState("");
   const [enteredAuthor, setEnteredAuthor] = useState("");
-
   function bodyChangeHandler(event) {
     setEnteredBody(event.target.value);
   }
   function authorChangeHandler(event) {
     setEnteredAuthor(event.target.value);
   }
-  function submitHandler(event){
+  function submitHandler(event) {
     event.preventDefault(); //  secara default itu saat form di submit maka akan reload halaman, itu di prevent
     const postData = {
       body: enteredBody,
       author: enteredAuthor,
-    }
+    };
     props.onAddPost(postData);
     props.onCancel(); // key onCancel dalam objek props komponen NewPost ini bisa digunakan sebagai fungsi
   }
   return (
-    // on submit dibawah itu event bawaan tag html
-    <form className={classes.form} onSubmit={submitHandler}> 
-      <p>
-        <label htmlFor="body">Text</label>
-        <textarea 
-          id="body"
-          required
-          rows={3}
-          onChange={bodyChangeHandler}  // nama propsnya bebas          
-        ></textarea>
-      </p>
-      <p>
-        <label htmlFor="name">Your Name</label>
-        <input type="text" id="name" required onChange={authorChangeHandler}/>
-      </p>
-      <div className={classes.actions}>
-        <button type="button" onClick={props.onCancel}>Cancel</button>
-        {/* secara default button itu akan bertindak menjadi submit*/}
-        <button>Submit</button> 
-      </div>
-    </form>
+    // wrapped content itu maksudnya adalah komponen NewPost ini akan di wrap oleh komponen Modal
+    <Modal>
+      <form className={classes.form} onSubmit={submitHandler}>
+        <p>
+          <label htmlFor="body">Text</label>
+          <textarea
+            id="body"
+            required
+            rows={3}
+            onChange={bodyChangeHandler} // nama propsnya bebas
+          ></textarea>
+        </p>
+        <p>
+          <label htmlFor="name">Your Name</label>
+          <input
+            type="text"
+            id="name"
+            required
+            onChange={authorChangeHandler}
+          />
+        </p>
+        <div className={classes.actions}>
+          <Link to="/" type="button">
+            Cancel
+          </Link>
+          {/* secara default button itu akan bertindak menjadi submit*/}
+          <button>Submit</button>
+        </div>
+      </form>
+    </Modal>
   );
 }
 
