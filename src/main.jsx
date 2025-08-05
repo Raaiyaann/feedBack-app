@@ -1,7 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import Post from "./routes/Posts.jsx";
+import Post, {loader as postLoader} from "./routes/Posts.jsx";
 import { RouterProvider, createBrowserRouter } from "react-router-dom"; // routerProvider ini merupakan komponen bawaan
 import NewPost from "./routes/NewPost.jsx";
 import RootLayout from "./routes/RootLayout.jsx";
@@ -16,6 +16,7 @@ const route = createBrowserRouter([
       {
         path: "/",
         element: <Post />,
+        loader:postLoader,
         children: [{ path: "/create-post", element: <NewPost /> }], // ini artinya route /create-post akan di render pada komponen NewPost
       },
     ],

@@ -1,20 +1,10 @@
 import Post from "./Post";
 import classes from "./PostList.module.css";
-import { useState, useEffect } from "react";
+import { useLoaderData } from "react-router-dom";
 
 function PostList() {
-  const [posts, setPost] = useState([]);
-  const [isFetching, setIsFetching] = useState(false); // untu buat kondisi loading saat membutuhkan waktu untuk ambil datanya
-  useEffect(() => {
-    async function fetchPost() {
-      setIsFetching(true);
-      const response = await fetch("http://localhost:8080/posts");
-      const responseData = await response.json();
-      setPost(responseData.posts); // "posts" disini itu merupakan key dari objek dibuat dari backend nya, bukan dari useState
-      setIsFetching(false);
-    }
-    fetchPost();
-  }, []);
+  const posts = useLoaderData() || []; // agar kalau null atau undefined, tetap bisa di render sebagai array kosong
+  // dan tampilkan tulisan "There Is No Post Of FeedBack yet"
   function addPostHandler(postData) {
     fetch("http://localhost:8080/posts", {
       // fetch data dari backend
@@ -26,24 +16,6 @@ function PostList() {
     });
     setPost((existingPosts) => [postData, ...existingPosts]);
   }
-
-  // postContent
-  let postContent = isFetching ? (
-    <div className={classes.loading}>
-      <h2>Loading posts ...</h2>
-    </div>
-  ) : posts.length > 0 ? (
-    <ul className={classes.Post}>
-      {posts.map((post) => (
-        <Post key={post.body} author={post.author} body={post.body} /> // "key" ini properti bawaan react
-      ))}
-    </ul>
-  ) : (
-    <div className={classes.noPost}>
-      <h2>There Is No Post Of FeedBack yet</h2>
-      <p>Please add Some!</p>
-    </div>
-  );
 
   return (
     <div className={classes.container}>
@@ -63,7 +35,8 @@ function PostList() {
       {/* komponen juga bisa bungkus komponen lain seperti "modal" dibawah yang nanti disebut penggunaan dengan children props 
           =====================================================================================================================
                                  dibawah merupakan penggunaan conditional rendering (pake ternary operator lebih readable )
-        {posts.length > 0 && (
+                                 */}
+      {posts.length > 0 && (
         <ul className={classes.Post}>
           {posts.map((post) => (
             <Post key={post.body} author={post.author} body={post.body} /> // "key" ini properti bawaan react
@@ -75,8 +48,7 @@ function PostList() {
           <h2>There Is No Post Of FeedBack yet</h2>
           <p>Please add Some!</p>
         </div>
-      )}*/}
-      {postContent}
+      )}
     </div>
   );
 }

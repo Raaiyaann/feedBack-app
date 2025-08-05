@@ -18,12 +18,12 @@
   transition: box-shadow 0.2s ease, background-color 0.3s ease,
     transform 0.7s ease, border 0.2s ease;
   box-sizing: border-box;
-  overflow: hidden;
 }
 
 .container-postingan:hover {
   /* untuk memberikan transparansi warna itu pake hex terakhirnya pakekan angka 2 digit terakhir (33 = tranparansi 20%) */
-  box-shadow: 0px -8px 2px #fbfbfb;
+  box-shadow: 0px -12px 24px rgba(251, 251, 251, 0.4),
+    0px 4px 16px rgba(21, 245, 186, 0.3);
   transform: scale(1.05);
   border-color: transparent;
 }
