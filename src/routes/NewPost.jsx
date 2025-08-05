@@ -1,8 +1,8 @@
 import classes from "./NewPost.module.css";
-import { useState } from "react";
+
 import Modal from "../components/Modal";
-import { Link } from "react-router-dom";
-function NewPost(props) {
+import { Link, Form, redirect } from "react-router-dom";
+function NewPost() {
   // $$$ const [useEnteredBody, setEnteredBody] = useState('') // useState itu SELALU mengembalikan array  dengan 2 elemen
   /* sebenarnya bisa juga dibawah seperti ini, cuman tidak praktis:
   --> const stateArray = useState(''); 
@@ -25,44 +25,18 @@ function NewPost(props) {
   //   // menampilkan tampilan nilai barunya
   // }
 
-  const [enteredBody, setEnteredBody] = useState("");
-  const [enteredAuthor, setEnteredAuthor] = useState("");
-  function bodyChangeHandler(event) {
-    setEnteredBody(event.target.value);
-  }
-  function authorChangeHandler(event) {
-    setEnteredAuthor(event.target.value);
-  }
-  function submitHandler(event) {
-    event.preventDefault(); //  secara default itu saat form di submit maka akan reload halaman, itu di prevent
-    const postData = {
-      body: enteredBody,
-      author: enteredAuthor,
-    };
-    props.onAddPost(postData);
-    props.onCancel(); // key onCancel dalam objek props komponen NewPost ini bisa digunakan sebagai fungsi
-  }
   return (
     // wrapped content itu maksudnya adalah komponen NewPost ini akan di wrap oleh komponen Modal
     <Modal>
-      <form className={classes.form} onSubmit={submitHandler}>
+      {/* Form di bawah ini merupakan bawaan react router dom */}
+      <Form method="post" className={classes.form}>
         <p>
           <label htmlFor="body">Text</label>
-          <textarea
-            id="body"
-            required
-            rows={3}
-            onChange={bodyChangeHandler} // nama propsnya bebas
-          ></textarea>
+          <textarea id="body" name="body" required rows={3}></textarea>
         </p>
         <p>
           <label htmlFor="name">Your Name</label>
-          <input
-            type="text"
-            id="name"
-            required
-            onChange={authorChangeHandler}
-          />
+          <input type="text" id="name" name="author" required />
         </p>
         <div className={classes.actions}>
           <Link to="/" type="button">
@@ -71,9 +45,30 @@ function NewPost(props) {
           {/* secara default button itu akan bertindak menjadi submit*/}
           <button>Submit</button>
         </div>
-      </form>
+      </Form>
     </Modal>
   );
 }
 
 export default NewPost;
+export async function action(data) {
+  // objek 'data' berisi informasi tentang permintaan http (request, params, context)
+  const formData = await data.request.formData(); // ini mengembalikan promise, makanya pake await.
+  // data di atas akan diubah menjadi objek FormData biasa, bukan objek javascript (yang key nya itu otomatis diambil dari name yaitu body dan author form diatas).
+  const postData = Object.fromEntries(formData); // diubah ke bentuk objek js {body: '...', author:'...'}
+  // bisa juga jadi:
+  /*
+    const postData = {
+    body: formData.get("body"),
+    author: formData.get("author"),
+    }
+    */
+  await fetch("http://localhost:8080/posts", {
+    method: "POST",
+    body: JSON.stringify(postData),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return redirect("/"); // ini akan mengembalikan ke endpoint awal saat di submit datanya
+}

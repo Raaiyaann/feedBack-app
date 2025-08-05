@@ -1,21 +1,10 @@
 import Post from "./Post";
 import classes from "./PostList.module.css";
 import { useLoaderData } from "react-router-dom";
-
 function PostList() {
   const posts = useLoaderData() || []; // agar kalau null atau undefined, tetap bisa di render sebagai array kosong
   // dan tampilkan tulisan "There Is No Post Of FeedBack yet"
-  function addPostHandler(postData) {
-    fetch("http://localhost:8080/posts", {
-      // fetch data dari backend
-      method: "POST",
-      body: JSON.stringify(postData),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    setPost((existingPosts) => [postData, ...existingPosts]);
-  }
+
 
   return (
     <div className={classes.container}>
@@ -54,3 +43,4 @@ function PostList() {
 }
 
 export default PostList;
+
