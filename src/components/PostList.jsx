@@ -28,7 +28,7 @@ function PostList() {
       {posts.length > 0 && (
         <ul className={classes.Post}>
           {posts.map((post) => (
-            <Post key={post.body} author={post.author} body={post.body} /> // "key" ini properti bawaan react
+            <Post key={post.body} id={post.id} author={post.author} body={post.body} /> // "key" ini properti bawaan react
           ))}
         </ul>
       )}

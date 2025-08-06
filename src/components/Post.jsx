@@ -1,5 +1,5 @@
 import classes from "./Post.module.css"; // classes ini sebuah objek yang digunakan untuk mengambil selector css nya
-
+import { Link } from "react-router-dom";
 // sebenarnya komponen itu seperti kumpulan fungsi saja
 function Post(props) {
   // props nanti sebagai objek menyimpan nilai yang diberikan saat diberikan nilai pada komponennya di app.jsx
@@ -11,8 +11,10 @@ function Post(props) {
     // kalau style nya menggunakan tanda hubung, nama classnya itu bungkus dengan " [" "] " .
     // kalau hanya 1 kata, jadi "classes.(namaClass)"
     <li className={classes["container-postingan"]}>
+      <Link to={props.id}>
       <p className={classes.author}>{props.author}</p> 
       <p className={classes.body}>{props.body}</p>
+      </Link>
     </li>
   );
 } // kalau bisa nama komponennya itu menggunakan capital untuk huruf awal

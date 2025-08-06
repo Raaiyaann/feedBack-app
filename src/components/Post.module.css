@@ -27,7 +27,9 @@
   transform: scale(1.05);
   border-color: transparent;
 }
-
+.post a{
+  text-decoration: none;
+}
 .author {
   color: #15f5ba;
   font-weight: bold;
